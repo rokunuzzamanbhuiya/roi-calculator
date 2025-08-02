@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROI Calculator</title>
+    <style>
+        /* * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            overflow: scroll;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            position: relative;
+            font-family: "Plus Jakarta Sans", sans-serif;
+        } */
+
+        .container {
+            position: relative;
+            font-family: "Plus Jakarta Sans", sans-serif;
+            max-width: 1218px;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        @media (max-width: 1260px) {
+            .container {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+        }
+
+        .toggle-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 64px;
+        }
+
+        .toggle-labels {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .label-left,
+        .label-right {
+            transition: opacity 0.3s ease;
+            color: #888;
+        }
+
+        .label-left.active,
+        .label-right.active {
+            color: #010101;
+            font-weight: 600;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 62px;
+            height: 32px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 7px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: #437BF0;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(22px);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 22px;
+            font-weight: 600;
+            color: #010101;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 60%;
+            height: 8px;
+            background-color: #C7CACF;
+            background-image: linear-gradient(#437BF0, #437BF0);
+            border-radius: 4px;
+            background-size: 50% 60%;
+            background-repeat: no-repeat;
+            outline: none;
+        }
+
+        @media (max-width: 768px) {
+            input[type="range"] {
+                width: 100%;
+            }
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            border: 2px solid #437BF0;
+            border-radius: 50%;
+            height: 16px;
+            width: 16px;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-runnable-track {
+            background: transparent;
+        }
+
+        .slider-value {
+            font-size: 16px;
+            margin-top: 0.25rem;
+            color: #4B5563;
+        }
+
+        .card-upper {
+            border-top-left-radius: 40px;
+            border-top-right-radius: 8px;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 40px;
+            padding: 24px;
+            background: #e3eaf9;
+            box-shadow: -4px -4px 32px 0 rgba(53, 54, 58, 0.05), 4px 4px 32px 0 rgba(53, 54, 58, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .card-upper h3 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 18px;
+            color: #010101;
+        }
+
+        .card-lower {
+            border-top-left-radius: 40px;
+            border-top-right-radius: 8px;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 40px;
+            padding: 24px;
+            border-radius: 40px 8px;
+            background: #e4fcef;
+            box-shadow: -4px -4px 32px 0 rgba(46, 47, 51, 0.05);
+        }
+
+        .card-lower h3 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 24px;
+            color: #010101;
+        }
+
+        .result-row-top {
+            display: grid;
+            margin: 20px 0;
+            font-size: 16px;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 0.5rem 0;
+            font-size: 16px;
+        }
+
+        .result-row span:last-child {
+            font-weight: bold;
+        }
+
+        .tooltip-wrapper {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            cursor: help;
+            font-size: 16px;
+            font-weight: 400;
+            color: #4B5563;
+            margin-bottom: 10px;
+        }
+
+        .tooltip-wrapper::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%;
+            /* position above */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 6px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            z-index: 10;
+        }
+
+        .tooltip-wrapper:hover::after {
+            opacity: 1;
+        }
+
+        .hint-icon svg {
+            vertical-align: middle;
+            width: 18px;
+            height: 18px;
+            margin-left: 2px;
+            cursor: pointer;
+        }
+
+        .hint-icon {
+            position: relative;
+            display: inline-block;
+        }
+
+        #currentHours {
+            font-size: 22px;
+            font-weight: 600;
+            color: #010101;
+        }
+
+        #aiTime {
+            font-size: 22px;
+            font-weight: 600;
+            color: #437BF0;
+        }
+
+        .bottom-wrapper {
+            font-size: 16px;
+            font-weight: 400;
+            color: #4B5563;
+            margin-bottom: 20px;
+        }
+
+        /* .highlight {
+            font-size: 18px;
+            color: #0c8a6e;
+        }
+
+        .negative {
+            color: #d62424;
+        }
+
+        .roi {
+            color: #f5a623;
+            font-weight: bold;
+        } */
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Toggle with left-right label -->
+    <div class="container">
+        <div class="toggle-container">
+            <div class="toggle-labels">
+                <span class="label-left active" id="labelLeft">Catchup bookkeeping</span>
+
+                <label class="switch">
+                    <input type="checkbox" id="featureToggle">
+                    <span class="slider"></span>
+                </label>
+
+                <span class="label-right" id="labelRight">Monthly bookkeeping</span>
+            </div>
+        </div>
+
+        <div class="grid">
+            <!-- Sliders -->
+            <div>
+                <div class="input-group">
+                    <label>Minutes spent processing each invoice/receipt</label>
+                    <input class="char_length_slider" type="range" id="minutesPerDoc" min="1" max="60" value="15">
+                    <div class="slider-value" id="minutesLabel">15 minutes</div>
+                </div>
+
+                <div class="input-group">
+                    <label>Number of invoices/receipts per month</label>
+                    <input class="char_length_slider" type="range" id="docsPerMonth" min="10" max="1000" step="10"
+                        value="100">
+                    <div class="slider-value" id="docsLabel">100 invoices</div>
+                </div>
+
+                <div class="input-group">
+                    <label>People involved in processing</label>
+                    <input class="char_length_slider" type="range" id="peopleCount" min="1" max="10" value="1">
+                    <div class="slider-value" id="peopleLabel">1 people</div>
+                </div>
+
+                <div class="input-group">
+                    <label>Average hourly wage ($)</label>
+                    <input class="char_length_slider" type="range" id="hourlyWage" min="10" max="200" step="5"
+                        value="25">
+                    <div class="slider-value" id="wageLabel">$25/hour</div>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div>
+                <div class="card-upper">
+                    <h3>Time Savings</h3>
+                    <div class="result-row-top">
+                        <span class="tooltip-wrapper">Hours you would spend</span>
+                        <span id="currentHours">25h</span>
+                    </div>
+                    <div class="result-row-top">
+                        <span class="tooltip-wrapper"
+                            data-tooltip="This is the time Nifty AI takes to process the data.">
+                            Nifty AI processing time
+                            <span class="hint-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" width="16" height="16">
+                                    <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                                    <path d="M12 16v.01" />
+                                    <path d="M12 13a2 2 0 0 0 .914 -3.782a1.98 1.98 0 0 0 -2.414 .483" />
+                                </svg>
+                            </span>
+                        </span>
+
+                        <span id="aiTime">&lt; 50 minutes
+                            (~30s/doc)</span>
+                    </div>
+                    <div class="result-row"
+                        style="border-top: 1px solid #ccc; margin-top: 1rem; padding-top: 1rem; color: #010101; font-size: 18px; font-weight: 600;">
+                        <span>Time saved</span>
+                        <span class="highlight" id="timeSaved"
+                            style="color: #437BF0; font-size: 28px; font-weight: 600;">25 hours</span>
+                    </div>
+                </div>
+
+                <div class="card-lower">
+                    <h3>Financial Impact</h3>
+                    <div class="result-row bottom-wrapper"><span>Gross monthly savings</span><span id="grossSavings"
+                            style="color: #010101; font-size: 22px; font-weight: 600;">$625</span></div>
+                    <div class="result-row bottom-wrapper"><span>Nifty AI monthly cost</span><span class="negative"
+                            style="color: #D80E4A; font-size: 22px; font-weight: 600;">- $49</span>
+                    </div>
+                    <div class="result-row bottom-wrapper"><span>Net monthly savings</span><span class="highlight"
+                            id="netSavings" style="color: #437BF0; font-size: 22px; font-weight: 600;">$576</span></div>
+                    <div class="result-row bottom-wrapper bottom-wrapper-other"
+                        style="border-top: 1px solid #ccc; margin-top: 1rem; padding-top: 1rem; color: #010101; font-size: 18px; font-weight: 600;">
+                        <span>Net yearly savings</span><span class="highlight" id="yearlySavings"
+                            style="color: #437BF0; font-size: 28px; font-weight: 600;">$6912</span>
+                    </div>
+                    <div class="result-row bottom-wrapper"><span>Return on Investment</span><span class="roi"
+                            id="roiPercent" style="color: #E1B016; font-size: 22px; font-weight: 600;">1176%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script -->
+    <script>
+        const inputs = {
+            minutesPerDoc: document.getElementById("minutesPerDoc"),
+            docsPerMonth: document.getElementById("docsPerMonth"),
+            peopleCount: document.getElementById("peopleCount"),
+            hourlyWage: document.getElementById("hourlyWage"),
+        };
+
+        const labels = {
+            minutesLabel: document.getElementById("minutesLabel"),
+            docsLabel: document.getElementById("docsLabel"),
+            peopleLabel: document.getElementById("peopleLabel"),
+            wageLabel: document.getElementById("wageLabel"),
+            currentHours: document.getElementById("currentHours"),
+            aiTime: document.getElementById("aiTime"),
+            timeSaved: document.getElementById("timeSaved"),
+            grossSavings: document.getElementById("grossSavings"),
+            netSavings: document.getElementById("netSavings"),
+            yearlySavings: document.getElementById("yearlySavings"),
+            roiPercent: document.getElementById("roiPercent"),
+        };
+
+        const toggle = document.getElementById("featureToggle");
+        const labelLeft = document.getElementById("labelLeft");
+        const labelRight = document.getElementById("labelRight");
+
+        function updateLabels() {
+            labels.minutesLabel.textContent = `${inputs.minutesPerDoc.value} minutes`;
+            labels.docsLabel.textContent = `${inputs.docsPerMonth.value} invoices`;
+            labels.peopleLabel.textContent = `${inputs.peopleCount.value} people`;
+            labels.wageLabel.textContent = `$${inputs.hourlyWage.value}/hour`;
+        }
+
+        function calculate() {
+            updateLabels();
+
+            const m = +inputs.minutesPerDoc.value;
+            const d = +inputs.docsPerMonth.value;
+            const p = +inputs.peopleCount.value;
+            const w = +inputs.hourlyWage.value;
+            const aiCost = 49;
+
+            const currentTime = (m * d * p) / 60;
+            const aiTimeMinutesPerDoc = toggle.checked ? 0.25 : 0.5;
+            const aiTime = (aiTimeMinutesPerDoc * d) / 60;
+
+            const timeSaved = currentTime - aiTime;
+            const gross = timeSaved * w;
+            const net = gross - aiCost;
+            const yearly = net * 12;
+            const roi = ((net / aiCost) * 100).toFixed(0);
+
+            labels.currentHours.textContent = `${currentTime.toFixed(1)}h`;
+            labels.aiTime.textContent = `< ${Math.round(aiTime * 60)} minutes (~${Math.round(aiTimeMinutesPerDoc * 60)}s/doc)`;
+            labels.timeSaved.textContent = `${timeSaved.toFixed(1)} hours`;
+            labels.grossSavings.textContent = `$${gross.toFixed(0)}`;
+            labels.netSavings.textContent = `$${net.toFixed(0)}`;
+            labels.yearlySavings.textContent = `$${yearly.toFixed(0)}`;
+            labels.roiPercent.textContent = `${roi}%`;
+        }
+
+        // Range input slider progress fill + calculate
+        document.querySelectorAll('input[type="range"]').forEach((input) => {
+            const updateSlider = () => {
+                const val = +input.value;
+                const min = +input.min;
+                const max = +input.max;
+                const percent = ((val - min) * 100) / (max - min);
+                input.style.backgroundSize = `${percent}% 100%`;
+            };
+
+            input.addEventListener("input", () => {
+                updateSlider();
+                calculate();
+            });
+
+            // Init each slider
+            updateSlider();
+        });
+
+        toggle.addEventListener("change", function () {
+            labelLeft.classList.toggle("active", !this.checked);
+            labelRight.classList.toggle("active", this.checked);
+            calculate();
+        });
+
+        // Init
+        labelLeft.classList.toggle("active", !toggle.checked);
+        labelRight.classList.toggle("active", toggle.checked);
+        calculate();
+    </script>
+</body>
+
+</html>
