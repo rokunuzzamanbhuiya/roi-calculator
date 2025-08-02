@@ -9,8 +9,9 @@
     1.2 Theme Default Styles
     1.3 Custom Animation Styles
     1.4 Preloader Styles
-    1.5 ROI Calculator Area Styles
-    1.21 Footer Area Styles
+    1.5 Header Area Styles
+    1.6 ROI Calculator Area Styles
+    1.7 Footer Area Styles
 	
 *******************************************/
 
@@ -315,14 +316,218 @@ a {
     transition: all .3s 1s ease-out;
 }
 
+/*----------------------------------------*/
+/*  1.5 Header Area Styles
+/*----------------------------------------*/
+
+header {
+    position: relative;
+    width: 100%;
+    background: #F8FAFC;
+    padding: 50px 0;
+}
+
+header h1 {
+    font-size: 50px;
+    color: #1E293B;
+    text-align: center;
+}
 
 /*----------------------------------------*/
-/*  1.4 ROI Calculator Area Styles
+/*  1.6 ROI Calculator Area Styles
 /*----------------------------------------*/
+.roi-calculator {
+    padding: 100px 0;
+    background: #ffffff;
+}
 
+.roi-header-part {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.roi-header-part h1 {
+    font-size: 46px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.roi-header-part .subtitle {
+    color: #555;
+    text-align: center;
+    max-width: 600px;
+    margin-bottom: 20px;
+}
+
+.toggle-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 64px;
+}
+
+.toggle-labels {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.label-left,
+.label-right {
+    transition: opacity 0.3s ease;
+    color: #888;
+}
+
+.label-left.active,
+.label-right.active {
+    color: #111;
+    font-weight: 600;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked+.slider {
+    background-color: #437BF0;
+}
+
+input:checked+.slider:before {
+    transform: translateX(22px);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.input-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+input[type="range"] {
+    /* -webkit-appearance: none;
+    appearance: none; */
+    width: 100%;
+    /* background-color: #C7CACF;
+    background-image: linear-gradient(#437BF0, #437BF0);
+    height: 8px;
+    border-radius: 4px; */
+
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    border: 2px solid #437BF0 !important;
+    border-radius: 50%;
+    background: #ffffff !important;
+    cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    border: 2px solid #437BF0 !important;
+    background: #ffffff !important;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    appearance: none;
+    box-shadow: none;
+    background: transparent;
+}
+
+.slider-value {
+    font-size: 14px;
+    margin-top: 0.25rem;
+    color: #444;
+}
+
+.card {
+    padding: 1.5rem;
+    border-radius: 10px;
+    background: #f0f5fa;
+}
+
+.result-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5rem 0;
+    font-size: 16px;
+}
+
+.result-row span:last-child {
+    font-weight: bold;
+}
+
+.highlight {
+    font-size: 18px;
+    color: #0c8a6e;
+}
+
+.negative {
+    color: #d62424;
+}
+
+.roi {
+    color: #f5a623;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
 
 /*----------------------------------------*/
-/*  1.5 Footer Area Styles
+/*  1.7 Footer Area Styles
 /*----------------------------------------*/
 footer {
     background: #F8FAFC;

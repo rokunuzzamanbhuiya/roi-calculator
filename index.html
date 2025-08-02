@@ -20,12 +20,112 @@
     </div>
     <!--Preloader End -->
 
+    <!-- Header Area Start -->
+    <header>
+        <div class="container">
+            <h1>Return on Investment (ROI) Calculator</h1>
+        </div>
+    </header>
+    <!-- Header Area End -->
+
 
 
     <!-- Body Main Wrapper Start -->
     <main>
 
         <!-- ROI Calculator Area Start -->
+        <section id="roi-calculator" class="roi-calculator">
+            <div class="container">
+
+                <div class="roi-header-part">
+                    <h1>ROI Calculator</h1>
+                    <p class="subtitle">
+                        See how much time and money you could save today. Receiptor AI automatically extracts receipts
+                        and invoices from your email and organizes them for you.
+                    </p>
+                </div>
+
+                <!-- Toggle with left-right label -->
+                <div class="toggle-container">
+                    <div class="toggle-labels">
+                        <span class="label-left active" id="labelLeft">Retroactive Extraction</span>
+
+                        <label class="switch">
+                            <input type="checkbox" id="featureToggle">
+                            <span class="slider"></span>
+                        </label>
+
+                        <span class="label-right" id="labelRight">Real-time Monitoring</span>
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <!-- Sliders -->
+                    <div>
+                        <div class="input-group">
+                            <label>Minutes spent processing each invoice/receipt</label>
+                            <input class="char_length_slider" type="range" id="minutesPerDoc" min="1" max="60"
+                                value="15">
+                            <div class="slider-value" id="minutesLabel">15 minutes</div>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Number of invoices/receipts per month</label>
+                            <input class="char_length_slider" type="range" id="docsPerMonth" min="10" max="1000"
+                                step="10" value="100">
+                            <div class="slider-value" id="docsLabel">100 invoices</div>
+                        </div>
+
+                        <div class="input-group">
+                            <label>People involved in processing</label>
+                            <input class="char_length_slider" type="range" id="peopleCount" min="1" max="10" value="1">
+                            <div class="slider-value" id="peopleLabel">1 people</div>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Average hourly wage ($)</label>
+                            <input class="char_length_slider" type="range" id="hourlyWage" min="10" max="200" step="5"
+                                value="25">
+                            <div class="slider-value" id="wageLabel">$25/hour</div>
+                        </div>
+                    </div>
+
+                    <!-- Results -->
+                    <div>
+                        <div class="card">
+                            <h3>Time Savings</h3>
+                            <div class="result-row"><span>Current monthly hours</span><span id="currentHours">25h</span>
+                            </div>
+                            <div class="result-row"><span>Receiptor AI processing time</span><span id="aiTime">&lt; 50
+                                    minutes
+                                    (~30s/doc)</span></div>
+                            <div class="result-row"
+                                style="border-top: 1px solid #ccc; margin-top: 1rem; padding-top: 1rem;">
+                                <span>Monthly time saved</span><span class="highlight" id="timeSaved">25 hours</span>
+                            </div>
+                        </div>
+
+                        <div class="card" style="background: #e8f5e9; margin-top: 1.5rem;">
+                            <h3>Financial Impact</h3>
+                            <div class="result-row"><span>Gross monthly savings</span><span
+                                    id="grossSavings">$625</span>
+                            </div>
+                            <div class="result-row"><span>Receiptor AI monthly cost</span><span class="negative">-
+                                    $49</span>
+                            </div>
+                            <div class="result-row"><span>Net monthly savings</span><span class="highlight"
+                                    id="netSavings">$576</span>
+                            </div>
+                            <div class="result-row"><span>Net yearly savings</span><span class="highlight"
+                                    id="yearlySavings">$6912</span></div>
+                            <div class="result-row"><span>Return on Investment</span><span class="roi"
+                                    id="roiPercent">1176%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
         <!-- ROI Calculator Area End -->
 
 
